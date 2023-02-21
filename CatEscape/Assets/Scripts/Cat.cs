@@ -8,34 +8,32 @@ public class Cat : MonoBehaviour
     Transform trans;
 
     private float speed = 20;
+    private bool gameWon = false;
 
     [SerializeField] private CharacterController controller;
     [SerializeField] private FloatingJoystick joystick;
     public GameObject joyBackground;
     public GameObject invisibleWall;
-    public GameObject lockedDoor;
 
     Vector2 startPos;
     Vector2 direction;
 
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         trans = GetComponent<Transform>();
-
-        //bricks1Rigid.GetComponent<Rigidbody>().isKinematic = true;
-        //bricks2Rigid.GetComponent<Rigidbody>().isKinematic = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(Input.GetMouseButtonDown(0)){
             joyBackground.SetActive(true);
         }
         
-        move();
+        if(!gameWon){
+            move();
+        }
+        
     }
 
     private void move(){
@@ -64,10 +62,22 @@ public class Cat : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //touching consumable
         if(other.gameObject.layer == 6){
             Destroy(other.gameObject);
-            //bricks1Rigid.GetComponent<Rigidbody>().isKinematic = false;
-            //bricks2Rigid.GetComponent<Rigidbody>().isKinematic = false;
+            invisibleWall.SetActive(false);
+
+        }
+
+        //touching switch
+        if(other.gameObject.layer == 7){
+            //switch down
+            //kill enemy 
+        }
+
+        if(other.gameObject.layer == 8){
+            animator.SetBool("sound", true);
+            gameWon = true;
         }
     }
 }

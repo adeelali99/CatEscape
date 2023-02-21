@@ -14,12 +14,17 @@ public class Cat : MonoBehaviour
     [SerializeField] private FloatingJoystick joystick;
     public GameObject joyBackground;
     public GameObject invisibleWall;
+    public GameObject vase;
+    public GameObject switchButton;
 
     Vector2 startPos;
     Vector2 direction;
 
     void Start()
     {
+        vase.SetActive(false);
+        switchButton.GetComponent<Transform>().position = new Vector3(1.5f , 0.08f , 2.8f);
+
         animator = GetComponent<Animator>();
         trans = GetComponent<Transform>();
     }
@@ -66,15 +71,15 @@ public class Cat : MonoBehaviour
         if(other.gameObject.layer == 6){
             Destroy(other.gameObject);
             invisibleWall.SetActive(false);
-
         }
 
         //touching switch
         if(other.gameObject.layer == 7){
-            //switch down
-            //kill enemy 
+            switchButton.GetComponent<Transform>().position = new Vector3(1.5f , 0f , 2.8f);
+            vase.SetActive(true);
         }
 
+        //Game won
         if(other.gameObject.layer == 8){
             animator.SetBool("sound", true);
             gameWon = true;
